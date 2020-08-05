@@ -12,11 +12,22 @@ import ViewUI from 'view-design';
 import common from './common';
 import swal from 'sweetalert';
 
+router.beforeEach((to, from, next) => {
+  ViewUI.LoadingBar.start();
+ 
+  next();
+});
+
+router.afterEach(route => {
+  ViewUI.LoadingBar.finish();
+});
+
 
 window.Vue = require('vue');
 
 Vue.use(ViewUI);
 Vue.mixin(common);
+
 
 
 

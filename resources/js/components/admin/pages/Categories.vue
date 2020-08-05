@@ -32,12 +32,13 @@
                 <td class="_table_name">{{category.categoryName}}</td>
                 <td>{{category.created_at}}</td>
                 <td>
-                  <Button type="info" size="small" @click="showEditModal(tag,index)"><Icon type="ios-create" /></Button>
-                  <Button type="error" size="small" @click="showDeleteModal(tag, index)"><Icon type="ios-trash" /></Button>
+                  <Button type="info" size="small" @click="showEditModal(category,index)"><Icon type="ios-create" /></Button>
+                  <Button type="error" size="small" @click="showDeleteModal(category,index)"><Icon type="ios-trash" /></Button>
                 </td>
               </tr>
             </table>
           </div>
+          
         </div>
 
     <!--adding category modal -->
@@ -50,7 +51,8 @@
                         >
                         
                           <Input v-model="categoryName" placeholder="Tag Name" />
-                          <div class="space"></div>
+                          <br>
+                          <br>
                           <Upload
                               multiple
                               type="drag"
@@ -60,6 +62,7 @@
                                :on-error="handleError"
                                :format="['jpg','jpeg','png','gif']"
                                :on-format-error="handleFormatError"
+                               
 
                               
                               action="/app/upload_category">
@@ -68,10 +71,12 @@
                                   <p>Click or drag files here to upload</p>
                               </div>
 
-                              <div class="image_thumb" v-if="iconImage">
-                                <img :src="`/uploads/${iconImage}`" alt="">
-                              </div>
+                              
                           </Upload>
+                          <div class="image_thumb" v-if="iconImage">
+                                <img :src="`/uploads/${iconImage}`" alt="" >
+                               
+                              </div>
 
                           <div slot="footer">
                             <Button type="primary" @click="addCategory" :disabled="isAdding" :loading="isAdding">{{isAdding? 'Adding...' : 'Add Category'}}</Button>
@@ -80,38 +85,74 @@
                   </Modal>
     <!--end add category modal -->
 
-            <!--edit tag modal -->
+            <!--edit category modal -->
                   <Modal
-                        v-model="editTagModal"
-                        title="Edit Tag"
-                        :mask-closable="false"
-                        :closable="false"
-                      
-                      >
-                      
-                        <Input v-model="editData.tagName" placeholder="Tag Name" @keyup.enter.stop="editTag" />
-                      
+                    v-model="editCategoryModal"
+                    title="Edit Category"
+                    :mask-closable="false"
+                    :closable="false"
+                    ref="uploads"
+                  
+                  >
+                  
+                    <Input v-model="editData.categoryName" placeholder="Category Name" />
 
-                        <div slot="footer">
-                          <Button type="primary" @click="editTag" :disabled="isAdding" :loading="isAdding">{{isAdding? 'Editing...' : 'Edit Tag'}}</Button>
-                          <Button type="error" @click="editTagModal=false">Close</Button>
-                        </div>
-                    </Modal>
+                    <br>
+                    <br>
+                          
+                          <Upload v-show="isIconImageNew"
+                             
+                              type="drag"
+                              :headers="{'x-csrf-token':token,'X-Requested-With': 'XMLHttpRequest'}"
+                              
+                               :on-success="handleSuccess"
+                               :on-error="handleError"
+                               :format="['jpg','jpeg','png','gif']"
+                               :on-format-error="handleFormatError"
+                               :show-upload-list="false"
+
+                              
+                              action="/app/upload_category">
+                              <div style="padding: 20px 0">
+                                  <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
+                                  <p>Click or drag files here to upload</p>
+                              </div>
+
+                              
+                          </Upload>
+                          <div class="image_thumb" v-show="editData.iconImage">
+                                <img :src="`/uploads/${editData.iconImage}`" alt="">
+                                
+                                 <Icon type="ios-close" id="closeImg" @click="deleteCatImg" />
+                              </div>
+                              <div class="image_thumb" v-show="iconImage">
+                                <img :src="`/uploads/${iconImage}`" alt="">
+                              
+                                 <Icon type="ios-close" id="closeImg" @click="deleteCatImg" />
+                              </div>
+                             
+                  
+
+                    <div slot="footer">
+                      <Button type="primary" @click="editCategory" :disabled="isEditing" :loading="isEditing">{{isEditing? 'Editing...' : 'Edit Category'}}</Button>
+                      <Button type="error" @click="editCategoryModal=false">Close</Button>
+                    </div>
+          </Modal>
             <!--end edit category modal -->
 
         <!---delete category modal --->
 
-          <Modal v-model="deleteTagModal" width="360">
+          <Modal v-model="deleteCategoryModal" width="360">
                 <p slot="header" style="color:#f60;text-align:center">
                     <Icon type="ios-information-circle"></Icon>
                     <span>Delete confirmation</span>
                 </p>
                 <div style="text-align:center">
-                    <p>Do you want to delete this tag?</p>
+                    <p>Do you want to delete this category</p>
                     <p>It will be deleted permanently!</p>
                 </div>
                 <div slot="footer">
-                    <Button type="error" size="large" long :loading="deleteModalLoading" @click="deleteTag">{{deleteModalLoading ? 'Deleting...' : 'Delete Tag'}}</Button>
+                    <Button type="error" size="large" long :loading="deleteModalLoading" @click="deleteCategory">{{deleteModalLoading ? 'Deleting...' : 'Delete Category'}}</Button>
                 </div>
           </Modal>
         <!-- end delete category modal -->
@@ -135,19 +176,24 @@ export default {
   data: function () {
     return {
       token:{},
+        // spinShow: true,
       categoryName: '',
       iconImage:'',
       addCategoryModal: false,
+      isEditing:false,
       isAdding:false,
+     
       categories:[],
-      editTagModal:false,
-      deleteTagModal:false,
+      editCategoryModal:false,
+      deleteCategoryModal:false,
       deleteModalLoading:false,
       editData:{
-         tagName:''
+         categoryName:'',
+         iconImage:''
       },
       deleteData:{},
       index:-1,
+      isIconImageNew:false,
     }
   },
 
@@ -181,6 +227,8 @@ export default {
               this.isAdding=false
               this.success('Category has been added successfully')
               this.addCategoryModal=false
+              this.categoryName =''
+              this.iconImage =''
               
              }else{
                this.info(res.status)
@@ -221,13 +269,22 @@ export default {
             })
          },
 
-         showEditModal:function(tag,index){
-           let obj ={
-             id: tag.id,
-             tagName: tag.tagName
-           }
-           this.editData =obj
-           this.editTagModal =true
+//show edit category modal //
+         showEditModal:function(category,index){
+          
+           this.editData =category
+           this.editCategoryModal =true
+
+           
+            if(this.iconImage =='' && this.editData.iconImage ==null){
+              this.isIconImageNew =true
+            }else{
+              this.isIconImageNew =false
+            }
+         
+         
+           
+            
          },
         
         showDeleteModal:function(tag,index){
@@ -261,6 +318,71 @@ export default {
             })
 
              
+        },
+
+//deleting category image//
+        deleteCatImg:function(category){
+         
+          
+          axios.post(`/app/deleteCatImg`,{
+            img:this.editData.iconImage ?this.editData.iconImage : this.iconImage,
+            id:this.editData.id ? this.editData.id : category.id
+            
+          }).then((res)=>{
+            if(res.status == 200){
+             this.editData.iconImage =''
+             this.iconImage =''
+             this.isIconImageNew =true
+             this.$refs.uploads.clearFiles()
+                          
+            
+            }
+          }).catch(err=>{
+            
+          })
+         
+           
+        },
+
+        editCategory:function(){
+          this.isEditing=true
+         axios.post(`/app/editCategory`,{
+           categoryName:this.editData.categoryName,
+           iconImage:this.editData.iconImage ? this.editData.iconImage : this.iconImage,
+           id:this.editData.id
+         }).then((res)=>{
+             if(res.status==200){
+               this.categories =res.data
+               this.isEditing=false
+               this.editCategoryModal=false
+               this.success('Category updated Successfully!')
+             }else{
+               this.info(res.status + '' + res.statusText)
+             }
+         }).catch(err=>{
+           this.errordef()
+         })
+        },
+
+        showDeleteModal:function(category,index){
+          this.deleteCategoryModal =true
+          this.deleteData =category
+        },
+
+        deleteCategory:function(){
+          this.deleteModalLoading=true
+          axios.post(`/app/deleteCategory`,{
+            id:this.deleteData.id
+          }).then((res)=>{
+            if(res.status ==200){
+              this.categories =res.data
+              this.deleteModalLoading =false
+              this.deleteCategoryModal=false
+              this.success('Category deleted successfully!')
+            }
+          }).catch(err=>{
+            this.error('Category could not be deleted');
+          })
         }
 
         
@@ -268,5 +390,28 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
+.image_thumb{
+  position: relative;
+   #closeImg{
+  position: absolute;
+  top:5px;
+  right: 8px;
+  background: black;
+  opacity: 0.6;
+  font-size: 22px;
+  font-weight: bold;
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  color: white !important;
+  cursor: pointer;
+}
+#closeImg:hover{
+  background: black;
+  opacity: 1;
+}
+}
+
+
 </style>

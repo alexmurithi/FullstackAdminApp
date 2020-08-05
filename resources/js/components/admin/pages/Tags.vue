@@ -57,24 +57,25 @@
         </Modal>
 
         <!--edit tag modal -->
-       <Modal
-                v-model="editTagModal"
-                title="Edit Tag"
-                :mask-closable="false"
-                :closable="false"
-               
-              >
-              
-                <Input v-model="editData.tagName" placeholder="Tag Name" @keyup.enter.stop="editTag" />
-              
+          <Modal
+                    v-model="editTagModal"
+                    title="Edit Tag"
+                    :mask-closable="false"
+                    :closable="false"
+                  
+                  >
+                  
+                    <Input v-model="editData.tagName" placeholder="Tag Name" @keyup.enter.stop="editTag" />
+                  
 
-                <div slot="footer">
-                  <Button type="primary" @click="editTag" :disabled="isAdding" :loading="isAdding">{{isAdding? 'Editing...' : 'Edit Tag'}}</Button>
-                  <Button type="error" @click="editTagModal=false">Close</Button>
-                </div>
-        </Modal>
+                    <div slot="footer">
+                      <Button type="primary" @click="editTag" :disabled="isAdding" :loading="isAdding">{{isAdding? 'Editing...' : 'Edit Tag'}}</Button>
+                      <Button type="error" @click="editTagModal=false">Close</Button>
+                    </div>
+          </Modal>
+        <!-- end edit tag model --->    
 
-        <!---delete tag modal --->
+    <!---delete tag modal --->
 
         <Modal v-model="deleteTagModal" width="360">
             <p slot="header" style="color:#f60;text-align:center">
@@ -88,7 +89,8 @@
             <div slot="footer">
                 <Button type="error" size="large" long :loading="deleteModalLoading" @click="deleteTag">{{deleteModalLoading ? 'deleting...' : 'Delete Tag'}}</Button>
             </div>
-    </Modal>
+       </Modal>
+    <!--end delete tag modal-->
 
         <!-- <Page :total="30" /> -->
       </div>

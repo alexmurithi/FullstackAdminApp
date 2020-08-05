@@ -80,5 +80,33 @@ class AdminController extends Controller
     return response()->json($categories);
   }
 
+  public function deleteCatImg(Request $request){
+    $this->validate($request,[
+      'img'=>'required',
+      'id'=>'required',
+    ]);
+    unlink(public_path().'/uploads/'.$request->img);
+   
+    return Category::where('id',$request->id)->update([
+      'iconImage'=>null
+    ]);
+  }
+
+  public function editCategory(Request $request){
+    Category::where('id',$request->id)->update([
+        'categoryName'=>$request->categoryName,
+        'iconImage'=>$request->iconImage
+    ]);
+
+    $categories =Category::orderBy('created_at','DESC')->get();
+    return response()->json($categories);
+  }
+
+  public function deleteCategory(Request $request){
+    Category::where('id',$request->id)->delete();
+    $categories =Category::orderBy('created_at','DESC')->get();
+    return response()->json($categories);
+  }
+
 
 }

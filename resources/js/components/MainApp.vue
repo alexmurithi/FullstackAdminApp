@@ -53,6 +53,8 @@
         name:'main-app',
         mounted() {
             console.log('Component mounted.')
-        }
+        },
+
+
     }
 </script>
