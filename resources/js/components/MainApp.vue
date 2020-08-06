@@ -20,9 +20,9 @@
             <ul class="_1side_menu_list_ul">
               
               <li><router-link to="/"><Icon type="ios-speedometer" />Dashboard</router-link></li>
-              <li><router-link to="/tags"><Icon type="ios-speedometer" />Tags</router-link></li>
-              <li><router-link to="/categories"><Icon type="ios-speedometer" />Categories</router-link></li>
-              
+              <li><router-link to="/tags"><Icon type="ios-bookmark" />Tags</router-link></li>
+              <li><router-link to="/categories"><Icon type="ios-list-box" />Categories</router-link></li>
+              <li><router-link to="/users"><Icon type="ios-list-box" />Users</router-link></li>
             </ul>
           </div>
         </div>

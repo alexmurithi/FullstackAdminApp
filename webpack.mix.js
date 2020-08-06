@@ -17,4 +17,5 @@ mix.js('resources/js/app.js', 'public/js')
     mix.styles([
         'resources/css/main.css',
         'resources/css/grid.css',
+        'resources/css/bootstrap.min.css'
     ], 'public/css/all.css');

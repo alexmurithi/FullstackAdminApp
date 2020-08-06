@@ -30,9 +30,19 @@ Route::post('/app/deleteCatImg','AdminController@deleteCatImg');
 Route::post('/app/editCategory','AdminController@editCategory');
 Route::post('/app/deleteCategory','AdminController@deleteCategory');
 
+//users//
+
+Route::get('/app/users','Admin\UsersController@index');
+Route::post('/app/createUser','Admin\UsersController@store');
 
 
+
+
+
+// Route::get('{any}', function () {
+//   return view('welcome');
+// });
 
 Route::get('{any}', function () {
   return view('welcome');
-});
+})->where('any','.*');
