@@ -73,7 +73,7 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        //
+      
     }
 
     /**
@@ -83,9 +83,33 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+      $this->validate($request,[
+        'id'=>'required',
+        'fullname'=>'required',
+        //if no change of email then lets this email remain as it is, otherwise update//
+        'email'=>"bail|email|required|unique:users,email,$request->id",
+        'password'=>'min:8',
+        'confirmPassword'=>'same:password',
+        'userType'=>'required'
+      ]);
+
+      $data =[
+        'fullname'=>$request->fullname,
+        'email'=>$request->email,
+        'userType'=>$request->userType
+      ];
+
+      if(!empty($request->password) && !empty($request->confirmPassword)){
+        $data['password'] =bcrypt($request->password);
+      }
+
+       User::where('id',$request->id)->update($data);
+      
+
+      $users =User::orderBy('created_at','DESC')->get();
+      return response()->json($users);
     }
 
     /**

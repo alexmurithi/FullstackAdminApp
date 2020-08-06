@@ -15,9 +15,9 @@ export default{
           desc: desc 
       });
   },
-  warning (desc,title="Hey!") {
+  warning (desc) {
       this.$Notice.warning({
-          title: title,
+         
           desc: desc 
       });
   },

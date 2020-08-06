@@ -248,27 +248,7 @@ export default {
                this.errordef()
              })
          },
-         editTag:function(){
-           axios.post(`/edit_tag`,{
-             id: this.editData.id,
-             tagName: this.editData.tagName
-           }
-           )
-            .then(res=>{
-              if(res.status == 200){
-                this.tags =res.data
-                this.success('Tag has been updated Successfully!')
-                this.editTagModal =false
-
-              }else{
-                this.warning('Tag was not updated!')
-              }
-            })
-            .catch(err=>{
-              this.errordef()
-            })
-         },
-
+      
 //show edit category modal //
          showEditModal:function(category,index){
           

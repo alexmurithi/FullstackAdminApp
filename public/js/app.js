@@ -2397,26 +2397,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         _this2.errordef();
       });
     },
-    editTag: function editTag() {
-      var _this3 = this;
-
-      axios.post("/edit_tag", {
-        id: this.editData.id,
-        tagName: this.editData.tagName
-      }).then(function (res) {
-        if (res.status == 200) {
-          _this3.tags = res.data;
-
-          _this3.success('Tag has been updated Successfully!');
-
-          _this3.editTagModal = false;
-        } else {
-          _this3.warning('Tag was not updated!');
-        }
-      })["catch"](function (err) {
-        _this3.errordef();
-      });
-    },
     //show edit category modal //
     showEditModal: function showEditModal(category, index) {
       this.editData = category;
@@ -2434,47 +2414,47 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.deleteTagModal = true;
     },
     deleteTag: function deleteTag() {
-      var _this4 = this;
+      var _this3 = this;
 
       this.deleteModalLoading = true;
       axios.post("/delete_tag", {
         id: this.deleteData.id
       }).then(function (res) {
         if (res.status == 200) {
-          _this4.tags = res.data;
-          _this4.deleteModalLoading = false;
-          _this4.deleteTagModal = false;
+          _this3.tags = res.data;
+          _this3.deleteModalLoading = false;
+          _this3.deleteTagModal = false;
 
-          _this4.success('Tag Deleted Successfuly!');
+          _this3.success('Tag Deleted Successfuly!');
         } else {
-          _this4.errordef();
+          _this3.errordef();
         }
       })["catch"](function (err) {
-        _this4.deleteModalLoading = false;
-        _this4.deleteTagModal = false;
+        _this3.deleteModalLoading = false;
+        _this3.deleteTagModal = false;
 
-        _this4.warning(err.response.statusText);
+        _this3.warning(err.response.statusText);
       });
     },
     //deleting category image//
     deleteCatImg: function deleteCatImg(category) {
-      var _this5 = this;
+      var _this4 = this;
 
       axios.post("/app/deleteCatImg", {
         img: this.editData.iconImage ? this.editData.iconImage : this.iconImage,
         id: this.editData.id ? this.editData.id : category.id
       }).then(function (res) {
         if (res.status == 200) {
-          _this5.editData.iconImage = '';
-          _this5.iconImage = '';
-          _this5.isIconImageNew = true;
+          _this4.editData.iconImage = '';
+          _this4.iconImage = '';
+          _this4.isIconImageNew = true;
 
-          _this5.$refs.uploads.clearFiles();
+          _this4.$refs.uploads.clearFiles();
         }
       })["catch"](function (err) {});
     },
     editCategory: function editCategory() {
-      var _this6 = this;
+      var _this5 = this;
 
       this.isEditing = true;
       axios.post("/app/editCategory", {
@@ -2483,37 +2463,37 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         id: this.editData.id
       }).then(function (res) {
         if (res.status == 200) {
-          _this6.categories = res.data;
-          _this6.isEditing = false;
-          _this6.editCategoryModal = false;
+          _this5.categories = res.data;
+          _this5.isEditing = false;
+          _this5.editCategoryModal = false;
 
-          _this6.success('Category updated Successfully!');
+          _this5.success('Category updated Successfully!');
         } else {
-          _this6.info(res.status + '' + res.statusText);
+          _this5.info(res.status + '' + res.statusText);
         }
       })["catch"](function (err) {
-        _this6.errordef();
+        _this5.errordef();
       });
     }
   }, _defineProperty(_methods, "showDeleteModal", function showDeleteModal(category, index) {
     this.deleteCategoryModal = true;
     this.deleteData = category;
   }), _defineProperty(_methods, "deleteCategory", function deleteCategory() {
-    var _this7 = this;
+    var _this6 = this;
 
     this.deleteModalLoading = true;
     axios.post("/app/deleteCategory", {
       id: this.deleteData.id
     }).then(function (res) {
       if (res.status == 200) {
-        _this7.categories = res.data;
-        _this7.deleteModalLoading = false;
-        _this7.deleteCategoryModal = false;
+        _this6.categories = res.data;
+        _this6.deleteModalLoading = false;
+        _this6.deleteCategoryModal = false;
 
-        _this7.success('Category deleted successfully!');
+        _this6.success('Category deleted successfully!');
       }
     })["catch"](function (err) {
-      _this7.error('Category could not be deleted');
+      _this6.error('Category could not be deleted');
     });
   }), _methods)
 });
@@ -2756,10 +2736,14 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-var _methods;
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2955,14 +2939,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       createUserModal: false,
       isEditing: false,
       isAdding: false,
-      categories: [],
-      editCategoryModal: false,
+      editUserModal: false,
       deleteCategoryModal: false,
       deleteModalLoading: false,
-      editData: {
-        categoryName: '',
-        iconImage: ''
-      },
+      editData: {},
       deleteData: {},
       index: -1,
       isIconImageNew: false,
@@ -2972,10 +2952,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         password: '',
         userType: 'Admin'
       },
-      users: []
+      users: [],
+      styles: {
+        height: 'calc(100% - 55px)',
+        overflow: 'auto',
+        paddingBottom: '53px',
+        position: 'static'
+      }
     };
   },
-  methods: (_methods = {
+  methods: {
     handleSuccess: function handleSuccess(res, file) {
       this.iconImage = res;
     },
@@ -3033,44 +3019,46 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           _this2.users = res.data;
         }
       })["catch"](function (err) {
-        _this2.error('Failed to get users!');
+        _this2.error(err.response.statusText + ' could not fetch users');
       });
     },
-    editTag: function editTag() {
+    editUser: function editUser(user, index) {
+      this.editData = user;
+      this.editUserModal = true;
+    },
+    editThisUser: function editThisUser() {
       var _this3 = this;
 
-      axios.post("/edit_tag", {
+      this.isEditing = true;
+      axios.post("/app/editUser", {
         id: this.editData.id,
-        tagName: this.editData.tagName
+        fullname: this.editData.fullname,
+        email: this.editData.email,
+        userType: this.editData.userType,
+        password: this.editData.password,
+        confirmPassword: this.editData.confirmPassword
       }).then(function (res) {
         if (res.status == 200) {
-          _this3.tags = res.data;
+          _this3.isEditing = false;
+          _this3.users = res.data;
 
-          _this3.success('Tag has been updated Successfully!');
+          _this3.success('User has been updated Successfully');
 
-          _this3.editTagModal = false;
-        } else {
-          _this3.warning('Tag was not updated!');
+          _this3.editUserModal = false;
         }
       })["catch"](function (err) {
-        _this3.errordef();
-      });
-    },
-    //show edit category modal //
-    showEditModal: function showEditModal(category, index) {
-      this.editData = category;
-      this.editCategoryModal = true;
+        if (err.response.status == 422) {
+          for (var i in err.response.data.errors) {
+            _this3.isEditing = false;
 
-      if (this.iconImage == '' && this.editData.iconImage == null) {
-        this.isIconImageNew = true;
-      } else {
-        this.isIconImageNew = false;
-      }
-    },
-    showDeleteModal: function showDeleteModal(tag, index) {
-      this.deleteData = tag;
-      this.index = index;
-      this.deleteTagModal = true;
+            _this3.warning(err.response.data.errors[i][0]);
+          }
+        } else {
+          _this3.isEditing = false;
+
+          _this3.warning(err.response.statusText);
+        }
+      });
     },
     deleteTag: function deleteTag() {
       var _this4 = this;
@@ -3095,66 +3083,25 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         _this4.warning(err.response.statusText);
       });
     },
-    //deleting category image//
-    deleteCatImg: function deleteCatImg(category) {
+    deleteCategory: function deleteCategory() {
       var _this5 = this;
 
-      axios.post("/app/deleteCatImg", {
-        img: this.editData.iconImage ? this.editData.iconImage : this.iconImage,
-        id: this.editData.id ? this.editData.id : category.id
+      this.deleteModalLoading = true;
+      axios.post("/app/deleteCategory", {
+        id: this.deleteData.id
       }).then(function (res) {
         if (res.status == 200) {
-          _this5.editData.iconImage = '';
-          _this5.iconImage = '';
-          _this5.isIconImageNew = true;
+          _this5.categories = res.data;
+          _this5.deleteModalLoading = false;
+          _this5.deleteCategoryModal = false;
 
-          _this5.$refs.uploads.clearFiles();
-        }
-      })["catch"](function (err) {});
-    },
-    editCategory: function editCategory() {
-      var _this6 = this;
-
-      this.isEditing = true;
-      axios.post("/app/editCategory", {
-        categoryName: this.editData.categoryName,
-        iconImage: this.editData.iconImage ? this.editData.iconImage : this.iconImage,
-        id: this.editData.id
-      }).then(function (res) {
-        if (res.status == 200) {
-          _this6.categories = res.data;
-          _this6.isEditing = false;
-          _this6.editCategoryModal = false;
-
-          _this6.success('Category updated Successfully!');
-        } else {
-          _this6.info(res.status + '' + res.statusText);
+          _this5.success('Category deleted successfully!');
         }
       })["catch"](function (err) {
-        _this6.errordef();
+        _this5.error('Category could not be deleted');
       });
     }
-  }, _defineProperty(_methods, "showDeleteModal", function showDeleteModal(category, index) {
-    this.deleteCategoryModal = true;
-    this.deleteData = category;
-  }), _defineProperty(_methods, "deleteCategory", function deleteCategory() {
-    var _this7 = this;
-
-    this.deleteModalLoading = true;
-    axios.post("/app/deleteCategory", {
-      id: this.deleteData.id
-    }).then(function (res) {
-      if (res.status == 200) {
-        _this7.categories = res.data;
-        _this7.deleteModalLoading = false;
-        _this7.deleteCategoryModal = false;
-
-        _this7.success('Category deleted successfully!');
-      }
-    })["catch"](function (err) {
-      _this7.error('Category could not be deleted');
-    });
-  }), _methods)
+  }
 });
 
 /***/ }),
@@ -7620,7 +7567,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, ".image_thumb[data-v-29bef7e2] {\n  position: relative;\n}\n.image_thumb #closeImg[data-v-29bef7e2] {\n  position: absolute;\n  top: 5px;\n  right: 8px;\n  background: black;\n  opacity: 0.6;\n  font-size: 22px;\n  font-weight: bold;\n  height: 25px;\n  width: 25px;\n  border-radius: 50%;\n  color: white !important;\n  cursor: pointer;\n}\n.image_thumb #closeImg[data-v-29bef7e2]:hover {\n  background: black;\n  opacity: 1;\n}", ""]);
+exports.push([module.i, ".image_thumb[data-v-29bef7e2] {\n  position: relative;\n}\n.image_thumb #closeImg[data-v-29bef7e2] {\n  position: absolute;\n  top: 5px;\n  right: 8px;\n  background: black;\n  opacity: 0.6;\n  font-size: 22px;\n  font-weight: bold;\n  height: 25px;\n  width: 25px;\n  border-radius: 50%;\n  color: white !important;\n  cursor: pointer;\n}\n.image_thumb #closeImg[data-v-29bef7e2]:hover {\n  background: black;\n  opacity: 1;\n}\n.footer[data-v-29bef7e2] {\n  width: 100%;\n  position: absolute;\n  bottom: 0;\n  left: 0;\n  border-top: 1px solid #e8e8e8;\n  padding: 10px 16px;\n  text-align: right;\n  background: #fff;\n}", ""]);
 
 // exports
 
@@ -86671,76 +86618,76 @@ var render = function() {
               ),
               _vm._v(" "),
               _c("div", { staticClass: "_overflow _table_div" }, [
-                _c(
-                  "table",
-                  { staticClass: "_table" },
-                  [
-                    _vm._m(0),
-                    _vm._v(" "),
-                    _vm._l(_vm.users, function(user, index) {
-                      return _vm.users.length
-                        ? _c("tr", { key: index }, [
-                            _c("td", [_vm._v(_vm._s(user.id))]),
-                            _vm._v(" "),
-                            _c("td", { staticClass: "_table_name" }, [
-                              _vm._v(_vm._s(user.fullname))
-                            ]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(user.email))]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(user.created_at))]),
-                            _vm._v(" "),
-                            _c(
-                              "td",
-                              [
-                                _c(
-                                  "Button",
-                                  {
-                                    attrs: { type: "info", size: "small" },
-                                    on: {
-                                      click: function($event) {
-                                        return _vm.showEditModal(
-                                          _vm.category,
-                                          index
-                                        )
-                                      }
-                                    }
-                                  },
-                                  [
-                                    _c("Icon", {
-                                      attrs: { type: "ios-create" }
-                                    })
-                                  ],
-                                  1
-                                ),
+                _vm.users
+                  ? _c(
+                      "table",
+                      { staticClass: "_table" },
+                      [
+                        _vm._m(0),
+                        _vm._v(" "),
+                        _vm._l(_vm.users, function(user, index) {
+                          return _vm.users.length
+                            ? _c("tr", { key: index }, [
+                                _c("td", [_vm._v(_vm._s(user.id))]),
+                                _vm._v(" "),
+                                _c("td", { staticClass: "_table_name" }, [
+                                  _vm._v(_vm._s(user.fullname))
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(user.email))]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(user.userType))]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(user.created_at))]),
                                 _vm._v(" "),
                                 _c(
-                                  "Button",
-                                  {
-                                    attrs: { type: "error", size: "small" },
-                                    on: {
-                                      click: function($event) {
-                                        return _vm.showDeleteModal(
-                                          _vm.category,
-                                          index
-                                        )
-                                      }
-                                    }
-                                  },
+                                  "td",
                                   [
-                                    _c("Icon", { attrs: { type: "ios-trash" } })
+                                    _c(
+                                      "Button",
+                                      {
+                                        attrs: { type: "info", size: "small" },
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.editUser(user, index)
+                                          }
+                                        }
+                                      },
+                                      [
+                                        _c("Icon", {
+                                          attrs: { type: "ios-create" }
+                                        })
+                                      ],
+                                      1
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "Button",
+                                      {
+                                        attrs: { type: "error", size: "small" },
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.deleteUser(user, index)
+                                          }
+                                        }
+                                      },
+                                      [
+                                        _c("Icon", {
+                                          attrs: { type: "ios-trash" }
+                                        })
+                                      ],
+                                      1
+                                    )
                                   ],
                                   1
                                 )
-                              ],
-                              1
-                            )
-                          ])
-                        : _vm._e()
-                    })
-                  ],
-                  2
-                )
+                              ])
+                            : _vm._e()
+                        })
+                      ],
+                      2
+                    )
+                  : _vm._e()
               ])
             ]
           ),
@@ -86888,138 +86835,227 @@ var render = function() {
           ),
           _vm._v(" "),
           _c(
-            "Modal",
+            "Drawer",
             {
-              ref: "uploads",
               attrs: {
-                title: "Edit Category",
+                title: "Edit User",
                 "mask-closable": false,
-                closable: false
+                styles: _vm.styles,
+                width: "720"
               },
               model: {
-                value: _vm.editCategoryModal,
+                value: _vm.editUserModal,
                 callback: function($$v) {
-                  _vm.editCategoryModal = $$v
+                  _vm.editUserModal = $$v
                 },
-                expression: "editCategoryModal"
+                expression: "editUserModal"
               }
             },
             [
-              _c("Input", {
-                attrs: { placeholder: "Category Name" },
-                model: {
-                  value: _vm.editData.categoryName,
-                  callback: function($$v) {
-                    _vm.$set(_vm.editData, "categoryName", $$v)
-                  },
-                  expression: "editData.categoryName"
-                }
-              }),
-              _vm._v(" "),
-              _c("br"),
-              _vm._v(" "),
-              _c("br"),
-              _vm._v(" "),
               _c(
-                "Upload",
-                {
-                  directives: [
-                    {
-                      name: "show",
-                      rawName: "v-show",
-                      value: _vm.isIconImageNew,
-                      expression: "isIconImageNew"
-                    }
-                  ],
-                  attrs: {
-                    type: "drag",
-                    headers: {
-                      "x-csrf-token": _vm.token,
-                      "X-Requested-With": "XMLHttpRequest"
-                    },
-                    "on-success": _vm.handleSuccess,
-                    "on-error": _vm.handleError,
-                    format: ["jpg", "jpeg", "png", "gif"],
-                    "on-format-error": _vm.handleFormatError,
-                    "show-upload-list": false,
-                    action: "/app/upload_category"
-                  }
-                },
+                "Form",
+                { attrs: { model: _vm.editData } },
                 [
                   _c(
-                    "div",
-                    { staticStyle: { padding: "20px 0" } },
+                    "Row",
+                    { attrs: { gutter: 32 } },
                     [
-                      _c("Icon", {
-                        staticStyle: { color: "#3399ff" },
-                        attrs: { type: "ios-cloud-upload", size: "52" }
-                      }),
+                      _c(
+                        "Col",
+                        { attrs: { span: "12" } },
+                        [
+                          _c(
+                            "FormItem",
+                            {
+                              attrs: { label: "Name", "label-position": "top" }
+                            },
+                            [
+                              _c("Input", {
+                                attrs: { prefix: "ios-contact" },
+                                model: {
+                                  value: _vm.editData.fullname,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.editData, "fullname", $$v)
+                                  },
+                                  expression: "editData.fullname"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      ),
                       _vm._v(" "),
-                      _c("p", [_vm._v("Click or drag files here to upload")])
+                      _c(
+                        "Col",
+                        { attrs: { span: "12" } },
+                        [
+                          _c(
+                            "FormItem",
+                            {
+                              attrs: { label: "Email", "label-position": "top" }
+                            },
+                            [
+                              _c("Input", {
+                                attrs: { prefix: "ios-mail" },
+                                model: {
+                                  value: _vm.editData.email,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.editData, "email", $$v)
+                                  },
+                                  expression: "editData.email"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "Row",
+                    { attrs: { gutter: 32 } },
+                    [
+                      _c(
+                        "Col",
+                        { attrs: { span: "12" } },
+                        [
+                          _c(
+                            "FormItem",
+                            {
+                              attrs: {
+                                label: "Password",
+                                "label-position": "top"
+                              }
+                            },
+                            [
+                              _c("Input", {
+                                attrs: {
+                                  prefix: "ios-lock",
+                                  type: "password",
+                                  password: ""
+                                },
+                                model: {
+                                  value: _vm.editData.password,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.editData, "password", $$v)
+                                  },
+                                  expression: "editData.password"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "Col",
+                        { attrs: { span: "12" } },
+                        [
+                          _c(
+                            "FormItem",
+                            {
+                              attrs: {
+                                label: "Confirm Password",
+                                "label-position": "top"
+                              }
+                            },
+                            [
+                              _c("Input", {
+                                attrs: {
+                                  prefix: "ios-lock",
+                                  type: "password",
+                                  password: ""
+                                },
+                                model: {
+                                  value: _vm.editData.confirmPassword,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.editData,
+                                      "confirmPassword",
+                                      $$v
+                                    )
+                                  },
+                                  expression: "editData.confirmPassword"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "Row",
+                    { attrs: { gutter: 32 } },
+                    [
+                      _c(
+                        "Col",
+                        { attrs: { span: "24" } },
+                        [
+                          _c(
+                            "FormItem",
+                            {
+                              attrs: {
+                                label: "User Type",
+                                "label-position": "top"
+                              }
+                            },
+                            [
+                              _c(
+                                "Select",
+                                {
+                                  attrs: { clearable: "" },
+                                  model: {
+                                    value: _vm.editData.userType,
+                                    callback: function($$v) {
+                                      _vm.$set(_vm.editData, "userType", $$v)
+                                    },
+                                    expression: "editData.userType"
+                                  }
+                                },
+                                [
+                                  _c("Option", { attrs: { value: "Admin" } }, [
+                                    _vm._v("Admin")
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("Option", { attrs: { value: "Author" } }, [
+                                    _vm._v("Author")
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("Option", { attrs: { value: "User" } }, [
+                                    _vm._v("User")
+                                  ])
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
                     ],
                     1
                   )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  directives: [
-                    {
-                      name: "show",
-                      rawName: "v-show",
-                      value: _vm.editData.iconImage,
-                      expression: "editData.iconImage"
-                    }
-                  ],
-                  staticClass: "image_thumb"
-                },
-                [
-                  _c("img", {
-                    attrs: {
-                      src: "/uploads/" + _vm.editData.iconImage,
-                      alt: ""
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("Icon", {
-                    attrs: { type: "ios-close", id: "closeImg" },
-                    on: { click: _vm.deleteCatImg }
-                  })
                 ],
                 1
               ),
               _vm._v(" "),
               _c(
                 "div",
-                {
-                  directives: [
-                    {
-                      name: "show",
-                      rawName: "v-show",
-                      value: _vm.iconImage,
-                      expression: "iconImage"
-                    }
-                  ],
-                  staticClass: "image_thumb"
-                },
-                [
-                  _c("img", {
-                    attrs: { src: "/uploads/" + _vm.iconImage, alt: "" }
-                  }),
-                  _vm._v(" "),
-                  _c("Icon", {
-                    attrs: { type: "ios-close", id: "closeImg" },
-                    on: { click: _vm.deleteCatImg }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                { attrs: { slot: "footer" }, slot: "footer" },
+                { staticClass: "footer" },
                 [
                   _c(
                     "Button",
@@ -87029,13 +87065,9 @@ var render = function() {
                         disabled: _vm.isEditing,
                         loading: _vm.isEditing
                       },
-                      on: { click: _vm.editCategory }
+                      on: { click: _vm.editThisUser }
                     },
-                    [
-                      _vm._v(
-                        _vm._s(_vm.isEditing ? "Editing..." : "Edit Category")
-                      )
-                    ]
+                    [_vm._v(_vm._s(_vm.isEditing ? "Editing..." : "Edit User"))]
                   ),
                   _vm._v(" "),
                   _c(
@@ -87044,7 +87076,7 @@ var render = function() {
                       attrs: { type: "error" },
                       on: {
                         click: function($event) {
-                          _vm.editCategoryModal = false
+                          _vm.editUserModal = false
                         }
                       }
                     },
@@ -87138,6 +87170,8 @@ var staticRenderFns = [
       _c("th", [_vm._v("Name")]),
       _vm._v(" "),
       _c("th", [_vm._v("Email")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("User Type")]),
       _vm._v(" "),
       _c("th", [_vm._v("Created At")]),
       _vm._v(" "),
@@ -103719,9 +103753,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     warning: function warning(desc) {
-      var title = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "Hey!";
       this.$Notice.warning({
-        title: title,
         desc: desc
       });
     },

@@ -34,6 +34,7 @@ Route::post('/app/deleteCategory','AdminController@deleteCategory');
 
 Route::get('/app/users','Admin\UsersController@index');
 Route::post('/app/createUser','Admin\UsersController@store');
+Route::post('/app/editUser','Admin\UsersController@update');
 
 
 
