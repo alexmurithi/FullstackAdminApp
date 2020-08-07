@@ -13,6 +13,7 @@
           </p>
 
           <div class="_overflow _table_div">
+           
             <table class="_table" v-if="users" >
               <!-- TABLE TITLE -->
               <tr>
@@ -166,17 +167,18 @@
 
         <!---delete category modal --->
 
-          <Modal v-model="deleteCategoryModal" width="360">
+          <Modal v-model="deleteUserModal" width="360">
                 <p slot="header" style="color:#f60;text-align:center">
                     <Icon type="ios-information-circle"></Icon>
                     <span>Delete confirmation</span>
                 </p>
                 <div style="text-align:center">
-                    <p>Do you want to delete this category</p>
+                    <p>Do you want to delete this User?</p>
                     <p>It will be deleted permanently!</p>
                 </div>
                 <div slot="footer">
-                    <Button type="error" size="large" long :loading="deleteModalLoading" @click="deleteCategory">{{deleteModalLoading ? 'Deleting...' : 'Delete Category'}}</Button>
+                  
+                    <Button type="error" size="large" long :loading="deleteModalLoading" @click="deleteThisUser">{{deleteModalLoading ? 'Deleting...' : 'Delete User'}}</Button>
                 </div>
           </Modal>
         <!-- end delete category modal -->
@@ -200,24 +202,20 @@ export default {
   data: function () {
     return {
       token:{},
-        // spinShow: true,
+        spinShow: true,
       categoryName: '',
       iconImage:'',
       createUserModal: false,
       isEditing:false,
       isAdding:false,
-     
-     
       editUserModal:false,
-      deleteCategoryModal:false,
+      deleteUserModal:false,
       deleteModalLoading:false,
       editData:{
         
       },
       deleteData:{},
-      index:-1,
-      isIconImageNew:false,
-      
+     
       user:{
         fullName:'',
         email:'',
@@ -234,11 +232,12 @@ export default {
                 },
     }
   },
-
+  
    methods:{
         handleSuccess (res, file) {
                this.iconImage =res;
             },
+
         handleError(res,file){
           console.log(file)
            this.$Notice.warning({
@@ -285,10 +284,12 @@ export default {
         },
 
          getUsers(){
+         
            axios.get(`/app/users`)
              .then(res=>{
                if(res.status == 200){
                 this.users =res.data
+               
                }
                
              })
@@ -335,19 +336,24 @@ export default {
            })
          },
 
+         deleteUser:function(user,index){
+           this.deleteData =user
+           this.deleteUserModal =true
+         },
 
-        deleteTag:function(){
+
+        deleteThisUser:function(){
           this.deleteModalLoading =true
           
-          axios.post(`/delete_tag`,{
+          axios.post(`/app/deleteUser`,{
             id:this.deleteData.id
           })
             .then(res=>{
               if(res.status == 200){
-                this.tags =res.data
+                this.users =res.data
                 this.deleteModalLoading =false
-                this.deleteTagModal =false
-                 this.success('Tag Deleted Successfuly!')
+                this.deleteUserModal =false
+                 this.success('User Deleted Successfuly!')
               }else{
                 this.errordef()
               }
@@ -356,30 +362,12 @@ export default {
             .catch(err=>{
               this.deleteModalLoading =false
               this.deleteTagModal =false
-             this.warning(err.response.statusText)
+             this.warning(err.response.statusText + ' User could not be deleted')
             })
 
              
         },
 
-
-
-
-        deleteCategory:function(){
-          this.deleteModalLoading=true
-          axios.post(`/app/deleteCategory`,{
-            id:this.deleteData.id
-          }).then((res)=>{
-            if(res.status ==200){
-              this.categories =res.data
-              this.deleteModalLoading =false
-              this.deleteCategoryModal=false
-              this.success('Category deleted successfully!')
-            }
-          }).catch(err=>{
-            this.error('Category could not be deleted');
-          })
-        }
 
         
    }

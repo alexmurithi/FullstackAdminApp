@@ -2924,6 +2924,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "categories",
   mounted: function mounted() {
@@ -2933,19 +2935,17 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       token: {},
-      // spinShow: true,
+      spinShow: true,
       categoryName: '',
       iconImage: '',
       createUserModal: false,
       isEditing: false,
       isAdding: false,
       editUserModal: false,
-      deleteCategoryModal: false,
+      deleteUserModal: false,
       deleteModalLoading: false,
       editData: {},
       deleteData: {},
-      index: -1,
-      isIconImageNew: false,
       user: {
         fullName: '',
         email: '',
@@ -3060,19 +3060,23 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
     },
-    deleteTag: function deleteTag() {
+    deleteUser: function deleteUser(user, index) {
+      this.deleteData = user;
+      this.deleteUserModal = true;
+    },
+    deleteThisUser: function deleteThisUser() {
       var _this4 = this;
 
       this.deleteModalLoading = true;
-      axios.post("/delete_tag", {
+      axios.post("/app/deleteUser", {
         id: this.deleteData.id
       }).then(function (res) {
         if (res.status == 200) {
-          _this4.tags = res.data;
+          _this4.users = res.data;
           _this4.deleteModalLoading = false;
-          _this4.deleteTagModal = false;
+          _this4.deleteUserModal = false;
 
-          _this4.success('Tag Deleted Successfuly!');
+          _this4.success('User Deleted Successfuly!');
         } else {
           _this4.errordef();
         }
@@ -3080,25 +3084,7 @@ __webpack_require__.r(__webpack_exports__);
         _this4.deleteModalLoading = false;
         _this4.deleteTagModal = false;
 
-        _this4.warning(err.response.statusText);
-      });
-    },
-    deleteCategory: function deleteCategory() {
-      var _this5 = this;
-
-      this.deleteModalLoading = true;
-      axios.post("/app/deleteCategory", {
-        id: this.deleteData.id
-      }).then(function (res) {
-        if (res.status == 200) {
-          _this5.categories = res.data;
-          _this5.deleteModalLoading = false;
-          _this5.deleteCategoryModal = false;
-
-          _this5.success('Category deleted successfully!');
-        }
-      })["catch"](function (err) {
-        _this5.error('Category could not be deleted');
+        _this4.warning(err.response.statusText + ' User could not be deleted');
       });
     }
   }
@@ -87094,11 +87080,11 @@ var render = function() {
             {
               attrs: { width: "360" },
               model: {
-                value: _vm.deleteCategoryModal,
+                value: _vm.deleteUserModal,
                 callback: function($$v) {
-                  _vm.deleteCategoryModal = $$v
+                  _vm.deleteUserModal = $$v
                 },
-                expression: "deleteCategoryModal"
+                expression: "deleteUserModal"
               }
             },
             [
@@ -87118,7 +87104,7 @@ var render = function() {
               ),
               _vm._v(" "),
               _c("div", { staticStyle: { "text-align": "center" } }, [
-                _c("p", [_vm._v("Do you want to delete this category")]),
+                _c("p", [_vm._v("Do you want to delete this User?")]),
                 _vm._v(" "),
                 _c("p", [_vm._v("It will be deleted permanently!")])
               ]),
@@ -87136,14 +87122,12 @@ var render = function() {
                         long: "",
                         loading: _vm.deleteModalLoading
                       },
-                      on: { click: _vm.deleteCategory }
+                      on: { click: _vm.deleteThisUser }
                     },
                     [
                       _vm._v(
                         _vm._s(
-                          _vm.deleteModalLoading
-                            ? "Deleting..."
-                            : "Delete Category"
+                          _vm.deleteModalLoading ? "Deleting..." : "Delete User"
                         )
                       )
                     ]
@@ -104075,14 +104059,15 @@ __webpack_require__.r(__webpack_exports__);
 /*!*******************************************************!*\
   !*** ./resources/js/components/admin/pages/Users.vue ***!
   \*******************************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Users_vue_vue_type_template_id_29bef7e2_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Users.vue?vue&type=template&id=29bef7e2&scoped=true& */ "./resources/js/components/admin/pages/Users.vue?vue&type=template&id=29bef7e2&scoped=true&");
 /* harmony import */ var _Users_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Users.vue?vue&type=script&lang=js& */ "./resources/js/components/admin/pages/Users.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _Users_vue_vue_type_style_index_0_id_29bef7e2_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Users.vue?vue&type=style&index=0&id=29bef7e2&lang=scss&scoped=true& */ "./resources/js/components/admin/pages/Users.vue?vue&type=style&index=0&id=29bef7e2&lang=scss&scoped=true&");
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _Users_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _Users_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _Users_vue_vue_type_style_index_0_id_29bef7e2_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Users.vue?vue&type=style&index=0&id=29bef7e2&lang=scss&scoped=true& */ "./resources/js/components/admin/pages/Users.vue?vue&type=style&index=0&id=29bef7e2&lang=scss&scoped=true&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -104114,7 +104099,7 @@ component.options.__file = "resources/js/components/admin/pages/Users.vue"
 /*!********************************************************************************!*\
   !*** ./resources/js/components/admin/pages/Users.vue?vue&type=script&lang=js& ***!
   \********************************************************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
