@@ -1,6 +1,6 @@
 <template>
-    <div id="app">
-    <div>
+    <div >
+    <div v-if="isLoggedIn">
       <!--========== ADMIN SIDE MENU one ========-->
       <div class="_1side_menu" >
         <div class="_1side_menu_logo">
@@ -51,6 +51,11 @@
 <script>
     export default {
         name:'main-app',
+        data:function(){
+          return{
+            isLoggedIn: false,
+          }
+        },
         mounted() {
             console.log('Component mounted.')
         },

@@ -33,6 +33,10 @@ Vue.mixin(common);
 
 
 Vue.component('main-app', require('./components/MainApp.vue').default);
+Vue.component('admin-app', require('./components/admin/pages/AdminApp.vue').default);
+
+
+
 
 
 const app = new Vue({
@@ -40,3 +44,8 @@ const app = new Vue({
     router,
     el: '#app',
 });
+
+const adminApp =new Vue({
+    router,
+  el:'#adminApp'
+})

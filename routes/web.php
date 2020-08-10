@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Auth::routes();
+// Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::post('/tag/create','AdminController@addTag');
@@ -24,6 +24,10 @@ Route::post('/edit_tag','AdminController@editTag');
 Route::post('/delete_tag','AdminController@destroy');
 Route::post('/app/upload_category','AdminController@uploadImg');
 Route::post('/app/add_category','AdminController@addCategory');
+
+//admin login//
+
+Route::post('/app/admin_login','AdminController@login');
 
 Route::get('/get_categories','AdminController@getCategories');
 Route::post('/app/deleteCatImg','AdminController@deleteCatImg');
@@ -39,11 +43,20 @@ Route::post('/app/deleteUser','Admin\UsersController@destroy');
 
 
 
-
+// Route::get('{any}',function(){
+//   return view('admin');
+// });
 
 // Route::get('{any}', function () {
 //   return view('welcome');
 // });
+
+
+
+Route::get('/app/{any}', function () {
+  return view('admin');
+})->where('any','.*');
+
 
 Route::get('{any}', function () {
   return view('welcome');

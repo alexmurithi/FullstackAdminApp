@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Tag;
 use App\Category;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
@@ -106,6 +107,23 @@ class AdminController extends Controller
     Category::where('id',$request->id)->delete();
     $categories =Category::orderBy('created_at','DESC')->get();
     return response()->json($categories);
+  }
+
+  public function login(Request $request){
+    $this->validate($request,[
+      'email'=>'bail|required|email',
+      'password'=>'bail|required|min:8',
+    ]);
+
+    if(Auth::attempt([
+      'email'=>$request->email,
+      'password'=>$request->password
+    ])){
+        return response()->json(['msg'=>'logged in'],200);
+    }else{
+      return  response()->json(['msg'=>'Invalid Login credetials'],401);
+    }
+   
   }
 
 
